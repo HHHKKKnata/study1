@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room★ 学習ポータル</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght=400;700&display=swap');
 
         body {
             font-family: 'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif;
-            background-color: #fff5f5; /* ほんのりベリー風味のホワイトチョコ壁 */
+            background-color: #fff5f5;
             background-image: radial-gradient(#e9d5d5 1px, transparent 1px);
             background-size: 20px 20px;
-            color: #4a2c2a; /* 濃厚なビターチョコ色 */
+            color: #4a2c2a;
             margin: 0;
             padding: 20px;
         }
@@ -23,11 +23,10 @@
             padding: 30px 25px;
             border-radius: 24px;
             box-shadow: 0 10px 30px rgba(74, 44, 42, 0.08), 0 1px 3px rgba(219, 39, 119, 0.05);
-            border: 4px solid #4a2c2a; /* チョコのフレーム */
+            border: 4px solid #4a2c2a;
             box-sizing: border-box;
         }
         
-        /* タイトル枠：薄い茶色の優しいフレーム */
         .title-box {
             border: 2px solid #c4a4a1;
             background-color: #fdf8f7;
@@ -44,13 +43,12 @@
         }
         .subtitle {
             font-size: 0.85rem;
-            color: #db2777; /* ベリーピンク */
+            color: #db2777;
             margin: 5px 0 0 0;
             font-weight: 700;
             letter-spacing: 1px;
         }
 
-        /* 🔍 検索ボックスエリア */
         .search-container {
             margin-bottom: 25px;
             position: relative;
@@ -69,7 +67,6 @@
             transition: all 0.2s ease;
             outline: none;
         }
-        /* 入力中、枠線がイチゴチョコ（ピンク）に変化 */
         .search-input:focus {
             border-color: #db2777;
             background-color: #ffffff;
@@ -89,25 +86,24 @@
             margin-bottom: 16px;
         }
         
-        /* チョコレートのひとかけらをイメージしたボタン */
         a {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 18px 24px;
-            background: #7c2d12; /* まろやかなミルクチョコ色 */
+            background: #7c2d12;
             color: #ffffff;
             text-decoration: none;
             border-radius: 16px;
             font-weight: 700;
             font-size: 1.05rem;
-            box-shadow: 0 6px 0 #4a1d0f; /* チョコの厚み・立体感 */
+            box-shadow: 0 6px 0 #4a1d0f;
             transition: all 0.15s ease;
             box-sizing: border-box;
             border: 2px solid #9a3412;
         }
         a:hover {
-            background: #9d174d; /* 完熟ベリーピンクに変化！ */
+            background: #9d174d;
             border-color: #831843;
             box-shadow: 0 6px 0 #500724;
             transform: translateY(-2px);
@@ -117,9 +113,8 @@
             box-shadow: 0 2px 0 #500724;
         }
         
-        /* 教科バッジ */
         .subject-badge {
-            background-color: #4a2c2a; /* ビターチョコ色 */
+            background-color: #4a2c2a;
             color: white;
             padding: 3px 10px;
             border-radius: 8px;
@@ -127,18 +122,23 @@
             margin-right: 6px;
             vertical-align: middle;
         }
-        /* ページ番号の丸バッジ（チェリーレッド） */
         .page-badge {
-            background-color: #dc2626; /* 情熱の赤 */
+            background-color: #dc2626;
             color: white;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            margin-right: 6px;
+        }
+        .ticket-title {
+            vertical-align: middle;
+            font-size: 0.95rem;
         }
         .arrow {
             font-size: 1.2rem;
             transition: transform 0.2s;
+            margin-left: 10px;
         }
         a:hover .arrow {
             transform: translateX(4px);
@@ -171,7 +171,7 @@
     </div>
     
     <div class="search-container">
-        <input type="text" id="search-bar" class="search-input" placeholder="🔍 キーワードやページ番号で探す（例: 連立、p55）">
+        <input type="text" id="search-bar" class="search-input" placeholder="🔍 キーワード、単元名、ページ数で探す">
     </div>
     
     <div id="loading" class="loading">🍫 魔法のクレーンで全教科を覗き見中...</div>
@@ -186,7 +186,6 @@
     const GITHUB_REPO = "study1"; 
     // ==========================================
 
-    // 設計思想に準拠した5つの教科フォルダ群
     const SUBJECTS = [
         { id: 'math', name: '数学' },
         { id: 'english', name: '英語' },
@@ -195,51 +194,56 @@
         { id: 'japanese', name: '国語' }
     ];
 
-    let allPages = []; // 取得した全全ページデータを保持する配列
+    let allPages = [];
 
-    // 全教科フォルダから非同期でファイル構造を全自動収集
     async function loadAllPages() {
         const listElement = document.getElementById('link-list');
         const loadingElement = document.getElementById('loading');
         
         try {
-            // 各フォルダのAPIリクエストを並列で実行して高速化
             const fetchPromises = SUBJECTS.map(async (subj) => {
                 const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${subj.id}`;
                 const response = await fetch(apiUrl);
-                if (!response.ok) return []; // フォルダがまだ空、または無い場合はスキップ
+                if (!response.ok) return [];
                 
                 const files = await response.json();
-                // pXX.html に一致するファイルを抽出
+                
+                // 「数字から始まる.html」に一致するファイルを抽出
                 return files
-                    .filter(file => file.name.match(/^p\d+\.html$/))
-                    .map(file => ({
-                        fileName: file.name,
-                        pageNum: file.name.match(/\d+/)[0],
-                        path: `${subj.id}/${file.name}`,
-                        subjectName: subj.name
-                    }));
+                    .filter(file => file.name.match(/^\d+.*\.html$/))
+                    .map(file => {
+                        // ファイル名から「数字（ページ）」と「タイトル」を抜き出す
+                        const match = file.name.match(/^(\d+)(.*?)\.html$/);
+                        const pageNum = match[1];
+                        const titleText = match[2] || "無題のページ"; // 日本語のサブタイトル部分
+
+                        return {
+                            fileName: file.name,
+                            pageNum: pageNum,
+                            titleText: titleText, // 追加：日本語タイトル
+                            path: `${subj.id}/${file.name}`,
+                            subjectName: subj.name
+                        };
+                    });
             });
 
             const results = await Promise.all(fetchPromises);
-            allPages = results.flat(); // 1つの配列に統合
+            allPages = results.flat();
 
-            // ページ番号順（昇順）にソート
+            // ページ番号順に並び替え
             allPages.sort((a, b) => parseInt(a.pageNum, 10) - parseInt(b.pageNum, 10));
 
             loadingElement.style.display = 'none';
-
-            // 初回描画（全件表示）
             renderList(allPages);
 
-            // 🔍 リアルタイム検索イベントの監視（文字が入力されるたびに発火）
+            // 🔍 リアルタイム検索（日本語のサブタイトルも検索対象に！）
             document.getElementById('search-bar').addEventListener('input', (e) => {
                 const keyword = e.target.value.toLowerCase().trim();
                 
-                // 検索ワードでフィルタリング（教科名、ファイル名、pXX のいずれかに部分一致）
                 const filtered = allPages.filter(page => {
                     return page.subjectName.toLowerCase().includes(keyword) || 
-                           page.fileName.toLowerCase().includes(keyword) ||
+                           page.titleText.toLowerCase().includes(keyword) || // サブタイトル検索に対応
+                           page.pageNum.includes(keyword) ||
                            `p${page.pageNum}`.includes(keyword);
                 });
                 
@@ -252,13 +256,12 @@
         }
     }
 
-    // 画面にリストカードを動的生成するロジック
     function renderList(pages) {
         const listElement = document.getElementById('link-list');
-        listElement.innerHTML = ''; // 一旦クリア
+        listElement.innerHTML = '';
 
         if (pages.length === 0) {
-            listElement.innerHTML = `<li class="loading">🎁 該当するミッション（ページ）が見つかりません。</li>`;
+            listElement.innerHTML = `<li class="loading">🎁 該当するミッションが見つかりません。</li>`;
             return;
         }
 
@@ -266,15 +269,16 @@
             const li = document.createElement('li');
             const a = document.createElement('a');
             
+            // チケットの中身に、抜き出した「日本語のサブタイトル」を表示！
             a.innerHTML = `
                 <span>
                     <span class="subject-badge">${page.subjectName}</span>
-                    <span>🍫 <span class="page-badge">p.${page.pageNum}</span> のチケット</span>
+                    <span class="page-badge">p.${page.pageNum}</span>
+                    <span class="ticket-title">${page.titleText}</span>
                 </span>
                 <span class="arrow">▶</span>
             `;
             
-            // 相対パス（例: ./math/p55.html）で各フォルダへ綺麗に繋ぐ
             a.href = `./${page.path}`;
             
             li.appendChild(a);
@@ -282,7 +286,6 @@
         });
     }
 
-    // 起動
     loadAllPages();
 </script>
 
