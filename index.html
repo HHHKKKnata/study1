@@ -210,12 +210,12 @@
                 
                 return files
                     .map(file => {
-                        // 【超重要】GitHubの暗号化されたファイル名を綺麗な日本語にデコードする
+                        // 日本語ファイル名を正しくデコード
                         const decodedName = decodeURIComponent(file.name);
                         
-                        // 新旧どちらのファイル名ルールにも対応する正規表現チェック
+                        // p55.html や 55連立方程式.html の両方に対応するルール
                         const match = decodedName.match(/^(p?)(\d+)-?(.*?)\.html$/);
-                        if (!match) return null; // 該当しないファイル（README等）は無視
+                        if (!match) return null;
 
                         const pageNum = match[2];
                         let titleText = match[3] || "";
@@ -225,20 +225,20 @@
                         }
 
                         return {
-                            fileName: file.name, // 実際のリンクには元のファイル名を使用
+                            fileName: file.name,
                             pageNum: pageNum,
                             titleText: titleText,
                             path: `${subj.id}/${file.name}`,
                             subjectName: subj.name
                         };
                     })
-                    .filter(page => page !== null); // 無視したファイルを配列から除外
+                    .filter(page => page !== null);
             });
 
             const results = await Promise.all(fetchPromises);
             allPages = results.flat();
 
-            // ページ番号順に並び替え
+            // ページ番号順に並べ替え
             allPages.sort((a, b) => parseInt(a.pageNum, 10) - parseInt(b.pageNum, 10));
 
             loadingElement.style.display = 'none';
