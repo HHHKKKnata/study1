@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数学 Room★ 2章 連立方程式の利用 p.55 章の問題B</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif;
+            background-color: #f0f8ff;
+            color: #2c3e50;
+            line-height: 1.6;
+            margin: 0;
+            padding: 12px;
+        }
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(70, 130, 180, 0.3);
+            border: 3px solid #4682b4;
+        }
+        
+        /* タイトルエリア */
+        .page-header {
+            text-align: center;
+            background: linear-gradient(135deg, #1e3d59 0%, #4682b4 100%);
+            padding: 15px;
+            border-radius: 15px;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+        .page-header .main-title { margin: 0; font-size: 1.3rem; font-weight: 700; }
+
+        /* 問題カード */
+        .quiz-card {
+            background: #ffffff;
+            border: 2px solid #b0c4de;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        
+        /* 状態ごとのカード背景（クッキリ化） */
+        .quiz-card.status-correct { background-color: #f1faf5; border-color: #2ecc71; }
+        .quiz-card.status-incorrect { background-color: #fdf4f4; border-color: #e74c3c; }
+
+        .quiz-num {
+            font-weight: bold; color: #ffffff; background: #1e3d59;
+            padding: 2px 12px; border-radius: 20px; font-size: 0.85rem; display: inline-block; margin-bottom: 12px;
+        }
+        .question { font-weight: bold; font-size: 0.98rem; margin-bottom: 15px; }
+        .math-text { font-family: serif; font-weight: bold; font-size: 1.05rem; background: #f0f4f8; padding: 2px 6px; border-radius: 4px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.88rem; }
+        th, td { border: 1px solid #4682b4; padding: 8px; text-align: center; }
+        th { background-color: #b0c4de; color: #1e3d59; }
+
+        /* アコーディオン */
+        .accordion-block { margin-top: 10px; }
+        details { border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+        details.hint-details { border: 1px dashed #4682b4; }
+        details.hint-details summary { background: #e6f2ff; color: #1e3d59; }
+        details.ans-details { border: 1px solid #2ecc71; }
+        details.ans-details summary { background: #eafaf1; color: #27ae60; }
+        
+        summary { padding: 10px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.88rem; list-style: none; }
+        summary::-webkit-details-marker { display: none; }
+        
+        .hint-content { padding: 12px; background: #fafcff; font-size: 0.9rem; color: #4682b4; font-weight: bold; border-top: 1px dashed #4682b4; }
+        .answer-content { padding: 15px; background: #ffffff; border-top: 1px solid #2ecc71; }
+        .ans-badge { font-size: 1.05rem; font-weight: bold; color: #d90429; display: block; margin-bottom: 8px; border-bottom: 2px solid #d90429; padding-bottom: 2px; }
+
+        /* =================================================================
+           【改良】直感的UI：判定セルフチェックボタン
+           ================================================================= */
+        .judge-zone {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px dashed #e0e0e0;
+        }
+        .btn-row { display: flex; gap: 10px; }
+        .judge-btn {
+            flex: 1; padding: 12px; border: none; border-radius: 8px;
+            font-weight: bold; font-size: 0.88rem; cursor: pointer;
+            transition: all 0.2s; text-align: center;
+        }
+        .btn-correct { background-color: #2ecc71; color: white; box-shadow: 0 4px 0 #27ae60; }
+        .btn-incorrect { background-color: #e74c3c; color: white; box-shadow: 0 4px 0 #c0392b; }
+        
+        /* 選択されたボタンの「送信完了」状態スタイル */
+        .judge-btn.is-selected {
+            flex: 2; background-color: #57606f !important; color: white !important;
+            box-shadow: none !important; transform: none !important; cursor: not-allowed;
+        }
+        /* 選ばれなかった方のボタンをフワッと消すスタイル */
+        .judge-btn.is-hidden { display: none; }
+
+        /* 右上の進捗・同期バッジ（デザイン統一） */
+        .status-badge {
+            position: absolute; top: 12px; right: 12px; font-size: 0.72rem; padding: 4px 10px;
+            border-radius: 20px; background: #f1f2f6; color: #57606f; font-weight: bold; display: none;
+        }
+        .action-link {
+            font-size: 0.75rem; color: #7f8c8d; text-decoration: underline; cursor: pointer;
+            display: inline-block; margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header page-header">
+        <h1 class="main-title">🔥 章の問題 B (p.55)</h1>
+    </div>
+
+    <div class="quiz-card" id="card-q3" data-quiz-id="q3">
+        <span class="status-badge" id="badge-q3"></span>
+        <div class="quiz-num">3</div>
+        <div class="question">
+            ある中学校では、去年の美術部と吹奏楽部の部員数の合計は80人でした。今年は、美術部が10%増え、逆に吹奏楽部が10%減ったため、全体で2人減りました。今年の美術部と吹奏楽部、それぞれの部員数を求めなさい。
+        </div>
+        
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">去年の美術部を x 人、吹奏楽部を y 人とおいて、去年の合計と今年の増減（-2人）で式を組み立てよう。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：今年の美術部：33人 、 今年の吹奏楽部：45人</span>
+                    <div class="ans-explain">去年の人数は x = 30, y = 50。今年の人数はそこから10%を増減させて、美術33人、吹奏楽45人となります。</div>
+
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q3">
+                            <button class="judge-btn btn-correct" id="btn-correct-q3" onclick="submitResult('q3', 'correct')">✨ 解けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q3" onclick="submitResult('q3', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right" style="text-align: right;">
+                            <span class="action-link" id="reset-q3" style="display:none;" onclick="resetQuizCard('q3')">解き直す（判定リセット）</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="quiz-card" id="card-q4" data-quiz-id="q4">
+        <span class="status-badge" id="badge-q4"></span>
+        <div class="quiz-num">4</div>
+        <div class="question">
+            周囲が3600mの池があります。同じところを同時に出発して、反対の方向にまわると15分後に出会い、同じ方向にまわると30分後にAがBに追いつきます。A、Bそれぞれの速さは分速何mですか。
+        </div>
+        
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">反対方向＝2人の道のりの「和」が池1周。同じ方向＝2人の道のりの「差」が池1周です。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：Aの速さ：分速 180m 、 Bの速さ：分速 60m</span>
+                    <div class="ans-explain">15x + 15y = 3600（出会う） と、30x - 30y = 3600（追いつく） を連立して解きます。</div>
+
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q4">
+                            <button class="judge-btn btn-correct" id="btn-correct-q4" onclick="submitResult('q4', 'correct')">✨ 解けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q4" onclick="submitResult('q4', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right" style="text-align: right;">
+                            <span class="action-link" id="reset-q4" style="display:none;" onclick="resetQuizCard('q4')">解き直す（判定リセット）</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="quiz-card" id="card-q5" data-quiz-id="q5">
+        <span class="status-badge" id="badge-q5"></span>
+        <div class="quiz-num">5</div>
+        <div class="question">
+            8%の食塩水 x g と 3%の食塩水 y g を混ぜて、6%の食塩水を 500g 作ります。x , y の値を求めなさい。
+        </div>
+        
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">「全体の重さの合計 = 500g」の式と、「溶けている塩の重さの合計」の2つの式を作ります。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：x = 300 , y = 200</span>
+                    <div class="ans-explain">x + y = 500 と、(8/100)x + (3/100)y = 30 を連立させて計算します。</div>
+
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q5">
+                            <button class="judge-btn btn-correct" id="btn-correct-q5" onclick="submitResult('q5', 'correct')">✨ 解けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q5" onclick="submitResult('q5', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right" style="text-align: right;">
+                            <span class="action-link" id="reset-q5" style="display:none;" onclick="resetQuizCard('q5')">解き直す（判定リセット）</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const CONFIG = { subject_id: "ma", page_id: "p55" };
+    const gasWebappUrl = "https://script.google.com/macros/s/AKfycbwS8EIJxAL-ClAqL28cl62m6dEY0Wye8bJtiLOFL7X3nsWAVJhG7Fj0dBHZZFoVnXBwjA/exec"; // GASのデプロイURLをここに貼る
+
+    // 【新設】問題ごとの送信中ロック管理オブジェクト（物理多重送信を完全にシャットアウト）
+    const submissionLocks = { q3: false, q4: false, q5: false };
+
+    function submitResult(quizId, userStatus) {
+        // 【防衛策1】ミリ秒単位の連打すり抜けをJavaScriptのメモリ空間上で完全にブロック
+        if (submissionLocks[quizId] === true) {
+            console.log("重複送信をブロックしました。");
+            return; 
+        }
+        submissionLocks[quizId] = true; // 即座にロックを展開
+
+        // 要素の取得
+        const btnCorrect = document.getElementById(`btn-correct-${quizId}`);
+        const btnIncorrect = document.getElementById(`btn-incorrect-${quizId}`);
+        const badge = document.getElementById(`badge-${quizId}`);
+        const card = document.getElementById(`card-${quizId}`);
+
+        // --- 【ブラッシュアップ】押したかどうかが1秒で伝わるダイナミックUI変化 ---
+        if (userStatus === 'correct') {
+            btnCorrect.classList.add('is-selected');
+            btnCorrect.innerText = "⚡ 送信完了（正解）";
+            btnIncorrect.classList.add('is-hidden'); // 押してない方を消去
+            if (card) card.classList.add('status-correct');
+        } else {
+            btnIncorrect.classList.add('is-selected');
+            btnIncorrect.innerText = "⚡ 送信完了（要復習）";
+            btnCorrect.classList.add('is-hidden'); // 押してない方を消去
+            if (card) card.classList.add('status-incorrect');
+        }
+
+        // 右上のステータス更新
+        if (badge) {
+            badge.style.display = "block";
+            badge.innerText = "⏳ サーバー同期中...";
+            badge.style.background = "#ebdbc5"; badge.style.color = "#b57c2b";
+        }
+
+        // 送信データの生成
+        const logData = {
+            subject_id: CONFIG.subject_id,
+            page_id: CONFIG.page_id,
+            quiz_id: quizId,
+            full_quiz_id: `${CONFIG.subject_id}.${CONFIG.page_id}.${quizId}`,
+            result: userStatus,
+            timestamp: new Date().toISOString()
+        };
+
+        // GAS未設定時の擬似ローカル動作（検証用）
+        if (!gasWebappUrl) {
+            setTimeout(() => {
+                if (badge) {
+                    badge.innerText = "☁️ ローカル保存完了";
+                    badge.style.background = "#e2e8f0"; badge.style.color = "#475569";
+                }
+                document.getElementById(`reset-${quizId}`).style.display = "inline-block";
+            }, 500);
+            return;
+        }
+
+        // 本番：GASへの非同期通信
+        fetch(gasWebappUrl, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(logData)
+        })
+        .then(() => {
+            if (badge) {
+                badge.innerText = "✨ スプレッドシート同期済";
+                badge.style.background = userStatus === 'correct' ? "#eafaf1" : "#fadbd8";
+                badge.style.color = userStatus === 'correct' ? "#27ae60" : "#e74c3c";
+            }
+            document.getElementById(`reset-${quizId}`).style.display = "inline-block";
+        })
+        .catch(err => {
+            console.error("通信失敗:", err);
+            if (badge) {
+                badge.innerText = "⚠️ 送信失敗・再試行可";
+                badge.style.background = "#fef9e7"; badge.style.color = "#f39c12";
+            }
+            // エラー時のみロックを解除して再送信を許す
+            submissionLocks[quizId] = false;
+            btnCorrect.classList.remove('is-hidden');
+            btnIncorrect.classList.remove('is-hidden');
+            btnCorrect.innerText = "✨ 解けた！(正解)";
+            btnIncorrect.innerText = "❌ もう一度！(不正解)";
+        });
+    }
+
+    /**
+     * カードの判定状態をリセットし、再送信を可能にする関数
+     */
+    function resetQuizCard(quizId) {
+        submissionLocks[quizId] = false; // メモリ上のロックを解除
+
+        // UI要素を初期状態へ戻す
+        const btnCorrect = document.getElementById(`btn-correct-${quizId}`);
+        const btnIncorrect = document.getElementById(`btn-incorrect-${quizId}`);
+        const card = document.getElementById(`card-${quizId}`);
+        const badge = document.getElementById(`badge-${quizId}`);
+
+        btnCorrect.classList.remove('is-selected', 'is-hidden');
+        btnIncorrect.classList.remove('is-selected', 'is-hidden');
+        btnCorrect.innerText = "✨ 解けた！(正解)";
+        btnIncorrect.innerText = "❌ もう一度！(不正解)";
+
+        if (card) card.classList.remove('status-correct', 'status-incorrect');
+        if (badge) { badge.style.display = "none"; }
+        
+        document.getElementById(`reset-${quizId}`).style.display = "none";
+    }
+</script>
+
+</body>
+</html>
