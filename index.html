@@ -208,30 +208,31 @@
                 
                 const files = await response.json();
                 
-                // 【改良】p55.html も 55連立方程式.html も両方マッチする超柔軟ルールに変更
                 return files
-                    .filter(file => file.name.match(/^(p?\d+).*\.html$/))
                     .map(file => {
-                        // ファイル名を細かく分解する
-                        // 例1: p55.html -> ['p', '55', '']
-                        // 例2: 52-連立方程式.html -> ['', '52', '-連立方程式']
-                        const match = file.name.match(/^(p?)(\d+)-?(.*?)\.html$/);
+                        // 【超重要】GitHubの暗号化されたファイル名を綺麗な日本語にデコードする
+                        const decodedName = decodeURIComponent(file.name);
+                        
+                        // 新旧どちらのファイル名ルールにも対応する正規表現チェック
+                        const match = decodedName.match(/^(p?)(\d+)-?(.*?)\.html$/);
+                        if (!match) return null; // 該当しないファイル（README等）は無視
+
                         const pageNum = match[2];
                         let titleText = match[3] || "";
 
-                        // タイトルが空っぽ（p55.htmlなどの場合）のときは優しい文字を補う
                         if (!titleText) {
                             titleText = "のチケットを開く";
                         }
 
                         return {
-                            fileName: file.name,
+                            fileName: file.name, // 実際のリンクには元のファイル名を使用
                             pageNum: pageNum,
                             titleText: titleText,
                             path: `${subj.id}/${file.name}`,
                             subjectName: subj.name
                         };
-                    });
+                    })
+                    .filter(page => page !== null); // 無視したファイルを配列から除外
             });
 
             const results = await Promise.all(fetchPromises);
@@ -243,7 +244,7 @@
             loadingElement.style.display = 'none';
             renderList(allPages);
 
-            // 🔍 リアルタイム検索（教科名、タイトル、ページ番号すべてを網羅）
+            // 🔍 リアルタイム検索
             document.getElementById('search-bar').addEventListener('input', (e) => {
                 const keyword = e.target.value.toLowerCase().trim();
                 
@@ -268,7 +269,7 @@
         listElement.innerHTML = '';
 
         if (pages.length === 0) {
-            listElement.innerHTML = `<li class="loading">🎁 該当するミッションが見てかりません。</li>`;
+            listElement.innerHTML = `<li class="loading">🎁 該当するミッションが見つかりません。</li>`;
             return;
         }
 
