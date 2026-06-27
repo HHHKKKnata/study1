@@ -208,19 +208,26 @@
                 
                 const files = await response.json();
                 
-                // 「数字から始まる.html」に一致するファイルを抽出
+                // 【改良】p55.html も 55連立方程式.html も両方マッチする超柔軟ルールに変更
                 return files
-                    .filter(file => file.name.match(/^\d+.*\.html$/))
+                    .filter(file => file.name.match(/^(p?\d+).*\.html$/))
                     .map(file => {
-                        // ファイル名から「数字（ページ）」と「タイトル」を抜き出す
-                        const match = file.name.match(/^(\d+)(.*?)\.html$/);
-                        const pageNum = match[1];
-                        const titleText = match[2] || "無題のページ"; // 日本語のサブタイトル部分
+                        // ファイル名を細かく分解する
+                        // 例1: p55.html -> ['p', '55', '']
+                        // 例2: 52-連立方程式.html -> ['', '52', '-連立方程式']
+                        const match = file.name.match(/^(p?)(\d+)-?(.*?)\.html$/);
+                        const pageNum = match[2];
+                        let titleText = match[3] || "";
+
+                        // タイトルが空っぽ（p55.htmlなどの場合）のときは優しい文字を補う
+                        if (!titleText) {
+                            titleText = "のチケットを開く";
+                        }
 
                         return {
                             fileName: file.name,
                             pageNum: pageNum,
-                            titleText: titleText, // 追加：日本語タイトル
+                            titleText: titleText,
                             path: `${subj.id}/${file.name}`,
                             subjectName: subj.name
                         };
@@ -236,13 +243,13 @@
             loadingElement.style.display = 'none';
             renderList(allPages);
 
-            // 🔍 リアルタイム検索（日本語のサブタイトルも検索対象に！）
+            // 🔍 リアルタイム検索（教科名、タイトル、ページ番号すべてを網羅）
             document.getElementById('search-bar').addEventListener('input', (e) => {
                 const keyword = e.target.value.toLowerCase().trim();
                 
                 const filtered = allPages.filter(page => {
                     return page.subjectName.toLowerCase().includes(keyword) || 
-                           page.titleText.toLowerCase().includes(keyword) || // サブタイトル検索に対応
+                           page.titleText.toLowerCase().includes(keyword) ||
                            page.pageNum.includes(keyword) ||
                            `p${page.pageNum}`.includes(keyword);
                 });
@@ -261,7 +268,7 @@
         listElement.innerHTML = '';
 
         if (pages.length === 0) {
-            listElement.innerHTML = `<li class="loading">🎁 該当するミッションが見つかりません。</li>`;
+            listElement.innerHTML = `<li class="loading">🎁 該当するミッションが見てかりません。</li>`;
             return;
         }
 
@@ -269,7 +276,6 @@
             const li = document.createElement('li');
             const a = document.createElement('a');
             
-            // チケットの中身に、抜き出した「日本語のサブタイトル」を表示！
             a.innerHTML = `
                 <span>
                     <span class="subject-badge">${page.subjectName}</span>
