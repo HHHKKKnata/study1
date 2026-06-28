@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英語 Room★ 1章 様々なラーメンの味 p.22 Various Ramen Flavors</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif;
+            background-color: #f7fafc;
+            color: #2d3748;
+            line-height: 1.7;
+            margin: 0;
+            padding: 12px;
+        }
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(30, 41, 59, 0.1);
+            border: 3px solid #1e3a8a;
+        }
+        
+        /* タイトルエリア */
+        .page-header {
+            text-align: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            padding: 18px;
+            border-radius: 15px;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+        .page-header .main-title { margin: 0; font-size: 1.3rem; font-weight: 700; letter-spacing: 0.5px; }
+        .page-header .sub-title { margin: 5px 0 0 0; font-size: 0.85rem; opacity: 0.8; }
+
+        /* セクション見出し */
+        h2.section-title {
+            font-size: 1.15rem;
+            color: #1e3a8a;
+            border-left: 5px solid #1e3a8a;
+            padding-left: 10px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+
+        /* 5文型色分けルール */
+        .s { color: #e53e3e; font-weight: bold; } /* 主語 (S) - 赤 */
+        .v { color: #3182ce; font-weight: bold; } /* 動詞 (V) - 青 */
+        .o { color: #38a169; font-weight: bold; } /* 目的語 (O) - 緑 */
+        .c { color: #dd6b20; font-weight: bold; } /* 補語 (C) - オレンジ */
+        .m { color: #2d3748; }                   /* その他/修飾語 (M) - 黒 */
+
+        /* 凡例・解説ボックス */
+        .explain-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        .legend-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #cbd5e0;
+        }
+        .legend-item { font-size: 0.85rem; font-weight: bold; }
+        
+        .core-concept {
+            background-color: #fffaf0;
+            border-left: 4px solid #dd6b20;
+            padding: 10px 12px;
+            margin-top: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 本文の英語表示 */
+        .text-passage {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .text-passage h3 { font-size: 1.05rem; margin-top: 0; color: #4a5568; border-bottom: 1px solid #edf2f7; padding-bottom: 5px;}
+        .sentence-block { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dotted #f7fafc; }
+        .sentence-en { font-size: 1.05rem; font-weight: 500; margin-bottom: 2px; }
+        .sentence-ja { font-size: 0.85rem; color: #718096; }
+
+        /* 問題カード（数学p55のUI思想を完全継承） */
+        .quiz-card {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .quiz-card.status-correct { background-color: #f0fff4; border-color: #38a169; }
+        .quiz-card.status-incorrect { background-color: #fff5f5; border-color: #e53e3e; }
+
+        .quiz-num {
+            font-weight: bold; color: #ffffff; background: #1e3a8a;
+            padding: 2px 12px; border-radius: 20px; font-size: 0.85rem; display: inline-block; margin-bottom: 12px;
+        }
+        .question { font-weight: bold; font-size: 0.95rem; margin-bottom: 15px; background: #f1f5f9; padding: 10px; border-radius: 8px; }
+
+        /* アコーディオン */
+        .accordion-block { margin-top: 10px; }
+        details { border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+        details.hint-details { border: 1px dashed #3182ce; }
+        details.hint-details summary { background: #ebf8ff; color: #2b6cb0; }
+        details.ans-details { border: 1px solid #38a169; }
+        details.ans-details summary { background: #f0fff4; color: #276749; }
+        
+        summary { padding: 10px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.85rem; list-style: none; }
+        summary::-webkit-details-marker { display: none; }
+        
+        .hint-content { padding: 12px; background: #fafcff; font-size: 0.88rem; color: #2b6cb0; border-top: 1px dashed #3182ce; }
+        .answer-content { padding: 15px; background: #ffffff; border-top: 1px solid #38a169; }
+        .ans-badge { font-size: 1rem; font-weight: bold; color: #e53e3e; display: block; margin-bottom: 8px; border-bottom: 2px solid #e53e3e; padding-bottom: 2px; }
+        .ans-explain { font-size: 0.88rem; color: #4a5568; margin-top: 6px; }
+
+        /* 判定チェックUI */
+        .judge-zone { margin-top: 15px; padding-top: 12px; border-top: 1px dashed #e2e8f0; }
+        .btn-row { display: flex; gap: 10px; }
+        .judge-btn {
+            flex: 1; padding: 12px; border: none; border-radius: 8px;
+            font-weight: bold; font-size: 0.85rem; cursor: pointer;
+            transition: all 0.2s; text-align: center;
+        }
+        .btn-correct { background-color: #38a169; color: white; box-shadow: 0 4px 0 #276749; }
+        .btn-incorrect { background-color: #e53e3e; color: white; box-shadow: 0 4px 0 #9b2c2c; }
+        
+        .judge-btn.is-selected { flex: 2; background-color: #4a5568 !important; color: white !important; box-shadow: none !important; cursor: not-allowed; }
+        .judge-btn.is-hidden { display: none; }
+
+        .status-badge {
+            position: absolute; top: 12px; right: 12px; font-size: 0.7rem; padding: 4px 10px;
+            border-radius: 20px; background: #edf2f7; color: #4a5568; font-weight: bold; display: none;
+        }
+        .action-link { font-size: 0.75rem; color: #718096; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 8px; }
+        .text-right { text-align: right; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header page-header">
+        <h1 class="main-title">🌏 Various Ramen Flavors in Japan (p.22)</h1>
+        <p class="sub-title">1章 英語のしくみ：言葉をうしろから貼る魔法をマスターしよう！</p>
+    </div>
+
+    <h2 class="section-title">💡 英語のならびかた大原則</h2>
+    <div class="explain-box">
+        <div class="legend-row">
+            <span class="legend-item"><span class="s">■ 主語 (S)</span>…だれが</span>
+            <span class="legend-item"><span class="v">■ 動詞 (V)</span>…どうする</span>
+            <span class="legend-item"><span class="o">■ 目的語 (O)</span>…なにを</span>
+            <span class="legend-item"><span class="c">■ 補語 (C)</span>…どんな状態（SイコールC）</span>
+        </div>
+        <strong>✨ 覚えるコツ①：英語は「うしろからペタッ」が大好き！</strong><br>
+        日本語は「<u>そこにいる</u>人々」のように前に飾りをつけますが、英語はまず <strong>many people</strong>（たくさんの人々）とドカンと言ってから、 <strong>there</strong>（そこにいる）をうしろからペタッと貼るのが大原則です。<br>
+        
+        <div class="core-concept">
+            <strong>✨ 覚えるコツ②：ボス（名詞）に近いほど「変えられない事実」！</strong><br>
+            形容詞がたくさん並ぶときは、ボスに近づくほど「ガチガチの事実」になります。<br>
+            例：<strong>local sweet corn</strong> ➔ 一番変えられない「甘味種(品種)のコーン(sweet corn)」がボスの隣で、その外側に「地元の(local)」が来ます。
+        </div>
+        <div class="core-concept" style="border-left-color: #3182ce; background-color: #ebf8ff; margin-top:8px;">
+            <strong>🔗 ハイフン(-)の魔法：</strong><br>
+            <strong>soy sauce-based</strong>（醤油ベースの）のように、2つの言葉をハイフンでガチッと結ぶと「後ろの名詞を説明するための1つの形容詞」に変身します。basedは過去形ではなく「〜に基づかれた」という状態（過去分詞）を表しています。
+        </div>
+    </div>
+
+    <h2 class="section-title">📖 教科書の英文をみてみよう</h2>
+    
+    <div class="text-passage">
+        <h3>イントロダクション</h3>
+        <div class="sentence-block">
+            <div class="sentence-en">If <span class="s">you</span>'<span class="v">re</span> <span class="c">interested</span> in Japanese food, <span class="v">don't forget</span> <span class="o">ramen</span>!</div>
+            <div class="sentence-ja">もしあなたが日本食に興味があるなら、ラーメンを忘れないでね！</div>
+        </div>
+        <div class="sentence-block" style="border:none; margin:0; padding:0;">
+            <div class="sentence-en"><span class="v">There are</span> <span class="s">many kinds of ramen</span> in Japan: Sapporo ramen, Kitakata ramen, Hakata ramen, and so on.</div>
+            <div class="sentence-ja">日本にはたくさんの種類のラーメンがあります。札幌ラーメン、喜多方ラーメン、博多ラーメンなどなど。</div>
+        </div>
+    </div>
+
+    <div class="text-passage">
+        <h3>Sapporo ramen in Hokkaido</h3>
+        <div class="sentence-block">
+            <div class="sentence-en">
+                <span class="s">Sapporo ramen</span> <span class="v">uses</span> <span class="o">a miso-based soup</span>.
+            </div>
+            <div class="sentence-ja">札幌ラーメンは味噌ベースのスープを使っています。</div>
+        </div>
+        <div class="sentence-block">
+            <div class="sentence-en">
+                <span class="s">It</span> <span class="v">stays</span> <span class="c">warm</span> because <span class="s">the soup</span> <span class="v">is</span> <span class="c">thick</span>.
+            </div>
+            <div class="sentence-ja">スープが濃厚（とろみがある）なので、温かいままキープされます。</div>
+        </div>
+        <div class="sentence-block">
+            <div class="sentence-en">
+                So, <span class="s">many people</span> there <span class="v">enjoy</span> <span class="o">it</span> in the cold winter.
+            </div>
+            <div class="sentence-ja">だから、現地の多くの人々は寒い冬にそれを楽しみます。</div>
+        </div>
+        <div class="sentence-block" style="border:none; margin:0; padding:0;">
+            <div class="sentence-en">
+                <span class="s">The recommended topping</span> <span class="v">is</span> <span class="c">local sweet corn</span>!
+            </div>
+            <div class="sentence-ja">おすすめのトッピングは、地元の甘いコーンです！</div>
+        </div>
+    </div>
+
+    <div class="text-passage">
+        <h3>Kitakata ramen in Fukushima</h3>
+        <div class="sentence-block">
+            <div class="sentence-en">
+                <span class="s">This ramen</span> <span class="v">uses</span> <span class="o">a soy sauce-based soup</span>.
+            </div>
+            <div class="sentence-ja">このラーメンは醤油ベースのスープを使っています。</div>
+        </div>
+        <div class="sentence-block">
+            <div class="sentence-en">
+                <span class="s">Local noodle manufacturers</span> <span class="v">make</span> <span class="o">the noodles</span> with water from mountains in the area.
+            </div>
+            <div class="sentence-ja">地元の麺製造業者たちは、その地域の山からの水で麺を作っています。</div>
+        </div>
+        <div class="sentence-block" style="border:none; margin:0; padding:0;">
+            <div class="sentence-en">
+                <span class="s">Some restaurants</span> <span class="v">open</span> early in the morning because <span class="s">people</span> there often <span class="v">eat</span> <span class="o">ramen</span> for breakfast.
+            </div>
+            <div class="sentence-ja">現地の部の人々はよく朝食にラーメンを食べるので、いくつかのレストランは早朝から開いています。</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">✏️ 予習確認！英文書きかえテスト（全3問）</h2>
+    <p style="font-size: 0.85rem; color:#4a5568; margin-top:-10px; margin-bottom:15px;">※ノートや別の紙に英文を書いてから「答え合わせ」を押してね！</p>
+
+    <div class="quiz-card" id="card-q1" data-quiz-id="q1">
+        <span class="status-badge" id="badge-q1"></span>
+        <div class="quiz-num">問 1</div>
+        <div class="question">
+            「日本には多くの種類のラーメンがあります。」を英文にしなさい。<br>
+            <span style="font-size:0.8rem; color:#718096;">（ヒント：「〜がある」の合図の言葉から始めてみよう）</span>
+        </div>
+        
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 並べかえヒントをみる</summary>
+                <div class="hint-content">使う言葉：[ Japan / many / ramen / tools / There / kinds / in / of / are ] （※1つ余分な言葉が混ざっています）</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：There are many kinds of ramen in Japan.</span>
+                    <div class="ans-explain">「〜がある」を意味する中身スカスカの看板副詞 <strong>There</strong> からスタートし、本当の主語である <strong>many kinds of ramen</strong> を後ろに滑り込ませる第1文型(SV)の形です。</div>
+
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q1">
+                            <button class="judge-btn btn-correct" id="btn-correct-q1" onclick="submitResult('q1', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q1" onclick="submitResult('q1', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right">
+                            <span class="action-link" id="reset-q1" style="display:none;" onclick="resetQuizCard('q1')">解き直す（判定リセット）</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="quiz-card" id="card-q2" data-quiz-id="q2">
+        <span class="status-badge" id="badge-q2"></span>
+        <div class="quiz-num">問 2</div>
+        <div class="question">
+            「札幌ラーメンは味噌ベースのスープを使っています。」を英文にしなさい。<br>
+            <span style="font-size:0.8rem; color:#718096;">（ヒント：「味噌ベースの」は、ハイフンの魔法を使って1つの言葉に結ぼう）</span>
+        </div>
+        
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 並べかえヒントをみる</summary>
+                <div class="hint-content">使う言葉：[ soup / uses / a / miso-based / ramen / Sapporo ]</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：Sapporo ramen uses a miso-based soup.</span>
+                    <div class="ans-explain">「味噌ベースの」は <strong>miso-based</strong> とハイフンでガチッと結んで、後ろのボス名詞「soup」の直前に置きます。S(Sapporo ramen) + V(uses) + O(a miso-based soup) の第3文型です。</div>
+
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q2">
+                            <button class="judge-btn btn-correct" id="btn-correct-q2" onclick="submitResult('q2', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q2" onclick="submitResult('q2', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right">
+                            <span class="action-link" id="reset-q2" style="display:none;" onclick="resetQuizCard('q2')">解き直す（判定リセット）</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="quiz-card" id="card-q3" data-quiz-id="q3">
+        <span class="status-badge" id="badge-q3"></span>
+        <div class="quiz-num">問 3</div>
+        <div class="question">
+            「地元の麺製造業者たちは、その地域の山からの水で麺を作っています。」を英文にしなさい。<br>
+            <span style="font-size:0.8rem; color:#718096;">（ヒント：「〜からの水で」は、大事な言葉（水）を先に言って、飾りを「後ろからペタッ」だよ）</span>
+        </div>
+        
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 並べかえヒントをみる</summary>
+                <div class="hint-content">使う言葉：[ from / local / make / water / the / noodle / mountains / area / manufacturers / the / noodles / with / in ]</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：Local noodle manufacturers make the noodles with water from mountains in the area.</span>
+                    <div class="ans-explain">後半は <strong>with water</strong>（水を使って）を先に言い、どんな水かを <strong>from mountains in the area</strong>（その地域の山からの）と後ろからペタペタ詳しく貼っています。</div>
+
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q3">
+                            <button class="judge-btn btn-correct" id="btn-correct-q3" onclick="submitResult('q3', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q3" onclick="submitResult('q3', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right">
+                            <span class="action-link" id="reset-q3" style="display:none;" onclick="resetQuizCard('q3')">解き直す（判定リセット）</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const CONFIG = { subject_id: "en", page_id: "p22" };
+    const gasWebappUrl = "https://script.google.com/macros/s/AKfycbwS8EIJxAL-ClAqL28cl62m6dEY0Wye8bJtiLOFL7X3nsWAVJhG7Fj0dBHZZFoVnXBwjA/exec"; // お父様のGASデプロイURLをここに貼り付ける
+
+    // 問題ごとの送信中ロック管理オブジェクト
+    const submissionLocks = { q1: false, q2: false, q3: false };
+
+    function submitResult(quizId, userStatus) {
+        // 多重送信の防止ロック
+        if (submissionLocks[quizId] === true) return; 
+        submissionLocks[quizId] = true; 
+
+        const btnCorrect = document.getElementById(`btn-correct-${quizId}`);
+        const btnIncorrect = document.getElementById(`btn-incorrect-${quizId}`);
+        const badge = document.getElementById(`badge-${quizId}`);
+        const card = document.getElementById(`card-${quizId}`);
+
+        // ダイナミックUI変化
+        if (userStatus === 'correct') {
+            btnCorrect.classList.add('is-selected');
+            btnCorrect.innerText = "⚡ 送信完了（正解）";
+            btnIncorrect.classList.add('is-hidden'); 
+            if (card) card.classList.add('status-correct');
+        } else {
+            btnIncorrect.classList.add('is-selected');
+            btnIncorrect.innerText = "⚡ 送信完了（要復習）";
+            btnCorrect.classList.add('is-hidden'); 
+            if (card) card.classList.add('status-incorrect');
+        }
+
+        if (badge) {
+            badge.style.display = "block";
+            badge.innerText = "⏳ サーバー同期中...";
+            badge.style.background = "#ebdbc5"; badge.style.color = "#b57c2b";
+        }
+
+        // 吸い上げる特徴量（ログ）データ構造
+        const logData = {
+            subject_id: CONFIG.subject_id,
+            page_id: CONFIG.page_id,
+            quiz_id: quizId,
+            full_quiz_id: `${CONFIG.subject_id}.${CONFIG.page_id}.${quizId}`,
+            result: userStatus,
+            timestamp: new Date().toISOString()
+        };
+
+        // GAS未設定時の擬似ローカル動作（検証用）
+        if (!gasWebappUrl) {
+            setTimeout(() => {
+                if (badge) {
+                    badge.innerText = "☁️ ローカル保存完了";
+                    badge.style.background = "#edf2f7"; badge.style.color = "#4a5568";
+                }
+                document.getElementById(`reset-${quizId}`).style.display = "inline-block";
+            }, 500);
+            return;
+        }
+
+        // 本番：GASスプレッドシートへの非同期通信
+        fetch(gasWebappUrl, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(logData)
+        })
+        .then(() => {
+            if (badge) {
+                badge.innerText = "✨ スプレッドシート同期済";
+                badge.style.background = userStatus === 'correct' ? "#e6f4ea" : "#fce8e6";
+                badge.style.color = userStatus === 'correct' ? "#137333" : "#c5221f";
+            }
+            document.getElementById(`reset-${quizId}`).style.display = "inline-block";
+        })
+        .catch(err => {
+            console.error("通信失敗:", err);
+            if (badge) {
+                badge.innerText = "⚠️ 送信失敗・再試行可";
+                badge.style.background = "#fffbeb"; badge.style.color = "#b57c2b";
+            }
+            submissionLocks[quizId] = false; // ロック解除
+            btnCorrect.classList.remove('is-hidden');
+            btnIncorrect.classList.remove('is-hidden');
+            btnCorrect.innerText = "✨ 書けた！(正解)";
+            btnIncorrect.innerText = "❌ もう一度！(不正解)";
+        });
+    }
+
+    // 判定リセット関数
+    function resetQuizCard(quizId) {
+        submissionLocks[quizId] = false; 
+
+        const btnCorrect = document.getElementById(`btn-correct-${quizId}`);
+        const btnIncorrect = document.getElementById(`btn-incorrect-${quizId}`);
+        const card = document.getElementById(`card-${quizId}`);
+        const badge = document.getElementById(`badge-${quizId}`);
+
+        btnCorrect.classList.remove('is-selected', 'is-hidden');
+        btnIncorrect.classList.remove('is-selected', 'is-hidden');
+        btnCorrect.innerText = "✨ 書けた！(正解)";
+        btnIncorrect.innerText = "❌ もう一度！(不正解)";
+
+        if (card) card.classList.remove('status-correct', 'status-incorrect');
+        if (badge) { badge.style.display = "none"; }
+        
+        document.getElementById(`reset-${quizId}`).style.style.display = "none";
+    }
+</script>
+
+</body>
+</html>
