@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国語 Room★ 1項 短歌・俳句ユニット 想定問題集</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=M+PLUS+Rounded+1c:wght=400;700&display=swap');
+        
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif;
+            background-color: #fff5f5;
+            color: #2d3748;
+            line-height: 1.7;
+            margin: 0;
+            padding: 12px;
+        }
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(74, 44, 42, 0.08);
+            border: 3px solid #7c2d12;
+        }
+        
+        /* タイトルエリア */
+        .page-header {
+            text-align: center;
+            background: linear-gradient(135deg, #4a1d0f 0%, #7c2d12 100%);
+            padding: 18px;
+            border-radius: 15px;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+        .page-header .main-title { margin: 0; font-size: 1.3rem; font-weight: 700; letter-spacing: 0.5px; }
+        .page-header .sub-title { margin: 5px 0 0 0; font-size: 0.85rem; opacity: 0.8; }
+
+        /* 大見出し（カリキュラム・各セクション） */
+        h2.section-title {
+            font-size: 1.15rem;
+            color: #7c2d12;
+            border-left: 5px solid #7c2d12;
+            padding-left: 10px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+
+        /* カリキュラム解説用色分けルール */
+        .s { color: #dc2626; font-weight: bold; } /* 定型 */
+        .v { color: #2563eb; font-weight: bold; } /* 句切れ */
+        .o { color: #16a34a; font-weight: bold; } /* 対比 */
+        .c { color: #ea580c; font-weight: bold; } /* 推敲 */
+
+        /* 凡例・解説ボックス */
+        .explain-box {
+            background-color: #fdf8f7;
+            border: 1px solid #c4a4a1;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        .legend-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #c4a4a1;
+        }
+        .legend-item { font-size: 0.85rem; font-weight: bold; }
+        
+        .core-concept {
+            background-color: #fffaf0;
+            border-left: 4px solid #ea580c;
+            padding: 10px 12px;
+            margin-top: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 問題カード（RamenのUI思想を完全継承） */
+        .quiz-card {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .quiz-card.status-correct { background-color: #f0fff4; border-color: #16a34a; }
+        .quiz-card.status-incorrect { background-color: #fff5f5; border-color: #dc2626; }
+
+        .quiz-num {
+            font-weight: bold; color: #ffffff; background: #7c2d12;
+            padding: 2px 12px; border-radius: 20px; font-size: 0.85rem; display: inline-block; margin-bottom: 12px;
+        }
+        .question { font-weight: bold; font-size: 0.95rem; margin-bottom: 15px; background: #f8fafc; padding: 10px; border-radius: 8px; }
+
+        /* アコーディオン */
+        .accordion-block { margin-top: 10px; }
+        details { border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+        details.hint-details { border: 1px dashed #2563eb; }
+        details.hint-details summary { background: #eff6ff; color: #1d4ed8; }
+        details.ans-details { border: 1px solid #16a34a; }
+        details.ans-details summary { background: #f0fff4; color: #14532d; }
+        
+        summary { padding: 10px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.85rem; list-style: none; }
+        summary::-webkit-details-marker { display: none; }
+        
+        .hint-content { padding: 12px; background: #fafcff; font-size: 0.88rem; color: #1d4ed8; border-top: 1px dashed #2563eb; }
+        .answer-content { padding: 15px; background: #ffffff; border-top: 1px solid #16a34a; }
+        .ans-badge { font-size: 1rem; font-weight: bold; color: #dc2626; display: block; margin-bottom: 8px; border-bottom: 2px solid #dc2626; padding-bottom: 2px; }
+        .ans-explain { font-size: 0.88rem; color: #4a5568; margin-top: 6px; white-space: pre-wrap; }
+
+        /* 判定チェックUI */
+        .judge-zone { margin-top: 15px; padding-top: 12px; border-top: 1px dashed #e2e8f0; }
+        .btn-row { display: flex; gap: 10px; }
+        .judge-btn {
+            flex: 1; padding: 12px; border: none; border-radius: 8px;
+            font-weight: bold; font-size: 0.85rem; cursor: pointer;
+            transition: all 0.2s; text-align: center;
+        }
+        .btn-correct { background-color: #16a34a; color: white; box-shadow: 0 4px 0 #14532d; }
+        .btn-incorrect { background-color: #dc2626; color: white; box-shadow: 0 4px 0 #7f1d1d; }
+        
+        .judge-btn.is-selected { flex: 2; background-color: #4a5568 !important; color: white !important; box-shadow: none !important; cursor: not-allowed; }
+        .judge-btn.is-hidden { display: none; }
+
+        .status-badge {
+            position: absolute; top: 12px; right: 12px; font-size: 0.7rem; padding: 4px 10px;
+            border-radius: 20px; background: #edf2f7; color: #4a5568; font-weight: bold; display: none;
+        }
+        .action-link { font-size: 0.75rem; color: #718096; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 8px; }
+        .text-right { text-align: right; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header page-header">
+        <h1 class="main-title">🍁 短歌・俳句ユニット 想定問題集</h1>
+        <p class="sub-title">1項 国語のしくみ：31文字と17文字の魔法をマスターしよう！</p>
+    </div>
+
+    <h2 class="section-title">💡 31文字の魔法！短歌の世界へようこそ</h2>
+    <div class="explain-box">
+        <div class="legend-row">
+            <span class="legend-item"><span class="s">■ 定型（リズム）</span>…五・七・五・七・七</span>
+            <span class="legend-item"><span class="v">■ 句切れ</span>…言葉のジャンプ（切れ目）</span>
+            <span class="legend-item"><span class="o">■ 对比</span>…くらべて引き立てる技</span>
+            <span class="legend-item"><span class="c">■ 推敲（すいこう）</span>…言葉のすっぴん磨き</span>
+        </div>
+
+        <strong>✨ 覚えるコツ①：日本語が一番心地よく踊る「魔法の器」！</strong><br>
+        短歌は、たった31音（五・七・五・七・七）の小さな器です。「っ」や「ん」も大切な1つの音として数えます[cite: 3]。この決まったリズムに言葉を乗せるだけで、まるで音楽のように心地よく響き出す魔法がかかります[cite: 3]。<br>
+        
+        <div class="core-concept">
+            <strong>✨ 覚えるコツ②：言葉が足りないからこそ、君の「想像力」が主役！</strong><br>
+            短歌は超ミニサイズの詩なので、すべてを説明することはできません[cite: 3]。だからこそ、残りは**読んだ人の想像力**でパズルを完成させます[cite: 3]。作者がどんな景色を見て、どんな気持ちだったのか、正解は1つじゃありません[cite: 3]。君のこれまでの思い出とドッキングさせて、自由に世界を広げてみよう[cite: 3]！
+        </div>
+
+        <div class="core-concept" style="border-left-color: #2563eb; background-color: #eff6ff; margin-top:8px;">
+            <strong>🔗 短歌を100倍おもしろく読むテクニック：</strong><br>
+            <ul>
+                <li><strong>言葉のコントラスト（対比）：</strong> 「君と僕」「一日と一生」のように、真逆の言葉を並べることで、切なさやドキドキをグッと引き立たせる技です[cite: 3]。</li>
+                <li><strong>季節のグラデーション（語彙）：</strong> 日本には、同じ雨でも「春雨」「蝉しぐれ」など、季節を感じる美しい言葉がたくさんあります[cite: 3]。言葉をたくさん知ると、いつもの景色がもっと色鮮やかに見えてくるよ[cite: 3]。</li>
+            </ul>
+        </div>
+
+        <div class="core-concept" style="border-left-color: #ea580c; background-color: #fff7ed; margin-top:8px;">
+            <strong>✏️ 自分の心を届ける「推敲（すいこう）」の魔法：</strong><br>
+            短歌を作る時は、最初に思いついた言葉をそのまま使わなくても大丈夫[cite: 3]。順番を入れ替えたり、もっとピッタリな言葉を探したりして、31文字にすっきりと磨き上げていきます[cite: 3]。言葉の並びを少し変えるだけで、一番伝えたかった「心の揺れ」が相手に100倍伝わるようになります[cite: 3]。
+        </div>
+    </div>
+
+    <p style="font-size: 0.85rem; color:#4a5568; margin-bottom:15px;">※ノートや別の紙に答えを書いてから「答え合わせ」を押してね！</p>
+
+    <!-- ===================================================================
+         【知識・理解：定型とルール】
+         =================================================================== -->
+    <h2 class="section-title">📝 【知識・理解：定型とルール】</h2>
+
+    <!-- 問1 -->
+    <div class="quiz-card" id="card-q1" data-quiz-id="q1">
+        <span class="status-badge" id="badge-q1"></span>
+        <div class="quiz-num">問 1</div>
+        <div class="question">短歌の基本的な構成（音の数）はどうなっていますか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">5つの部屋にリズムよく言葉が入るよ。全部で何文字かな？</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：五・七・五・七・七の三十一音。</span>
+                    <div class="ans-explain">短歌の基本中の基本のリズムです[cite: 3]。しっかり暗記しましょう。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q1">
+                            <button class="judge-btn btn-correct" id="btn-correct-q1" onclick="submitResult('q1', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q1" onclick="submitResult('q1', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q1" style="display:none;" onclick="resetQuizCard('q1')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問2 -->
+    <div class="quiz-card" id="card-q2" data-quiz-id="q2">
+        <span class="status-badge" id="badge-q2"></span>
+        <div class="quiz-num">問 2</div>
+        <div class="question">俳句が短歌と異なる大きな約束事（ルール）を二つ答えなさい。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">「全体の音の数」と「季節を表す言葉」に注目してみてね。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：五・七・五の十七音で作ることと、季語（季節を表す言葉）を入れること。</span>
+                    <div class="ans-explain">短歌（五七五七七）に比べて俳句は短く、必ず「季語」を入れるのが大原則のルールです。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q2">
+                            <button class="judge-btn btn-correct" id="btn-correct-q2" onclick="submitResult('q2', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q2" onclick="submitResult('q2', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q2" style="display:none;" onclick="resetQuizCard('q2')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問3 -->
+    <div class="quiz-card" id="card-q3" data-quiz-id="q3">
+        <span class="status-badge" id="badge-q3"></span>
+        <div class="quiz-num">問 3</div>
+        <div class="question">短歌の各句の名称について、第一句と第五句（最後）をそれぞれ何と言いますか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">最初を「○○」、最後を「○句」と言います。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：第一句を「初句」、第五句を「結句」と言う。</span>
+                    <div class="ans-explain">ちなみに第二句は「二句」、第三句は「三句」、第四句は「四句」と言います。最初と最後だけ特別な名前がついています。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q3">
+                            <button class="judge-btn btn-correct" id="btn-correct-q3" onclick="submitResult('q3', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q3" onclick="submitResult('q3', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q3" style="display:none;" onclick="resetQuizCard('q3')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問4 -->
+    <div class="quiz-card" id="card-q4" data-quiz-id="q4">
+        <span class="status-badge" id="badge-q4"></span>
+        <div class="quiz-num">問 4</div>
+        <div class="question">次の言葉の音の数はそれぞれ何音として数えますか。「学校」「観覧車」</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">「っ」や「ん」は1マス使うけれど、小さい「ゃ、ゅ、ょ」は前の文字とセットで1マスだよ。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：「学校」は四音（が・っ・こ・う）、「観覧車」は五音（か・ん・ら・ん・しゃ）と数える。</span>
+                    <div class="ans-explain">※「っ」や「ん」は独立して一音、拗音（「しゃ」など）は前の文字と合わせて一音とするルールがあります[cite: 3]。音読する時のリズム感を意識しよう！</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q4">
+                            <button class="judge-btn btn-correct" id="btn-correct-q4" onclick="submitResult('q4', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q4" onclick="submitResult('q4', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q4" style="display:none;" onclick="resetQuizCard('q4')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問5 -->
+    <div class="quiz-card" id="card-q5" data-quiz-id="q5">
+        <span class="status-badge" id="badge-q5"></span>
+        <div class="quiz-num">問 5</div>
+        <div class="question">短歌の中で、言葉のつながりや意味のうえから切れ目となるところを何と言いますか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">解説ボックスの青いマーカー（■）の部分を見てみてね！</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：句切れ。</span>
+                    <div class="ans-explain">意味の切れ目のことです[cite: 3]。例えば、二句目の終わりで切れていれば「二句切れ」と言います[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q5">
+                            <button class="judge-btn btn-correct" id="btn-correct-q5" onclick="submitResult('q5', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q5" onclick="submitResult('q5', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q5" style="display:none;" onclick="resetQuizCard('q5')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問6 -->
+    <div class="quiz-card" id="card-q6" data-quiz-id="q6">
+        <span class="status-badge" id="badge-q6"></span>
+        <div class="quiz-num">問 6</div>
+        <div class="question">基本の音数より多いものを（ a ）、少ないものを（ b ）、と言います。空欄を埋めなさい。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">aは字が「余る」、bは字が「足りない」を漢字三文字にしよう。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：a：字余り、b：字足らず。</span>
+                    <div class="ans-explain">どうしても表現したい言葉があるとき、あえてリズムを崩して感情を強調するテクニックです[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q6">
+                            <button class="judge-btn btn-correct" id="btn-correct-q6" onclick="submitResult('q6', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q6" onclick="submitResult('q6', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q6" style="display:none;" onclick="resetQuizCard('q6')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+
+    <!-- ===================================================================
+         【鑑賞：作品の理解】
+         =================================================================== -->
+    <h2 class="section-title">🎨 【鑑賞：作品の理解】</h2>
+
+    <!-- 問7 -->
+    <div class="quiz-card" id="card-q7" data-quiz-id="q7">
+        <span class="status-badge" id="badge-q7"></span>
+        <div class="quiz-num">問 7</div>
+        <div class="question">俵万智の短歌「『寒いね』と話しかければ『寒いね』と答える人のいるあたたかさ」において、作者が伝えたかった「あたたかさ」とはどのようなものですか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">ただ部屋が温かいわけではないよね。言葉を交わしたときの気持ちを考えてみて。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：寒いという言葉に対し、同じように返してくれる人がいることで生じる、心の通い合いや心のぬくもり。</span>
+                    <div class="ans-explain">同じ感覚を共有して言葉を返してくれる存在の愛おしさを、「あたたかさ」という言葉に託しています[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q7">
+                            <button class="judge-btn btn-correct" id="btn-correct-q7" onclick="submitResult('q7', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q7" onclick="submitResult('q7', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q7" style="display:none;" onclick="resetQuizCard('q7')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問8 -->
+    <div class="quiz-card" id="card-q8" data-quiz-id="q8">
+        <span class="status-badge" id="badge-q8"></span>
+        <div class="quiz-num">問 8</div>
+        <div class="question">栗木京子の短歌「観覧車回れよ回れ想い出は君には一日（ひとひ）我には一生（ひとよ）」において、使われている対比の表現を二組抜き出しなさい。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">「だれ」と「だれ」、「どれくらいの時間」と「どれくらいの時間」が比べられているかな？</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：「君」と「我」、「一日」と「一生」。</span>
+                    <div class="ans-explain">真逆のニュアンスを持つ言葉をガチッと対比させることで、二人の想いの強さの違いをドラマチックに引き立てています[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q8">
+                            <button class="judge-btn btn-correct" id="btn-correct-q8" onclick="submitResult('q8', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q8" onclick="submitResult('q8', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q8" style="display:none;" onclick="resetQuizCard('q8')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問9 -->
+    <div class="quiz-card" id="card-q9" data-quiz-id="q9">
+        <span class="status-badge" id="badge-q9"></span>
+        <div class="quiz-num">問 9</div>
+        <div class="question">問8の短歌で、作者（我）にとってこの一日はどのようなものだと感じられていますか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">「一生（ひとよ）」という言葉から、どれくらい大切に思っているか想像してみよう。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：自分にとっては一生の思い出になるほど、切なく大切な一日。</span>
+                    <div class="ans-explain">「相手にとってはたった一日（すぐ忘れてしまうもの）かもしれないけれど、私にとっては一生忘れないものだ」という強い切なさが込められています[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q9">
+                            <button class="judge-btn btn-correct" id="btn-correct-q9" onclick="submitResult('q9', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q9" onclick="submitResult('q9', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q9" style="display:none;" onclick="resetQuizCard('q9')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問10 -->
+    <div class="quiz-card" id="card-q10" data-quiz-id="q10">
+        <span class="status-badge" id="badge-q10"></span>
+        <div class="quiz-num">問 10</div>
+        <div class="question">若山牧水の短歌「白鳥は哀（かな）しからずや空の青海のあをにも染まずただよふ」において、白鳥はどのような様子として描かれていますか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">まわりの「青」の中にぽつんといる真っ白な鳥。どんな気持ちに見えるかな？</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：空や海の青さの中に混じることなく、ただ一人（一羽）で漂っている、孤独で哀しげな様子。</span>
+                    <div class="ans-explain">どこまでも続く青い世界（空と海）の中で、何色にも染まらない白い鳥の姿を自分自身に投影し、寂しさや切なさを表現しています[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q10">
+                            <button class="judge-btn btn-correct" id="btn-correct-q10" onclick="submitResult('q10', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q10" onclick="submitResult('q10', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q10" style="display:none;" onclick="resetQuizCard('q10')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問11 -->
+    <div class="quiz-card" id="card-q11" data-quiz-id="q11">
+        <span class="status-badge" id="badge-q11"></span>
+        <div class="quiz-num">問 11</div>
+        <div class="question">短歌は短い詩であるため、すべてを説明することはできません。読む際に読者が行うべき「楽しみ」とは何ですか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">解説ボックスの「覚えるコツ②」を思い出してね！自分の頭の中でどうするのかな？</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：想像力をはたらかせて、描かれていない背景や作者の心情を補いながら読むこと。</span>
+                    <div class="ans-explain">言葉が制限されているからこそ、行間（書かれていない部分）を自分の体験や心でリッチに補完して味わうのが短歌の一番の楽しさです[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q11">
+                            <button class="judge-btn btn-correct" id="btn-correct-q11" onclick="submitResult('q11', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q11" onclick="submitResult('q11', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q11" style="display:none;" onclick="resetQuizCard('q11')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+
+    <!-- ===================================================================
+         【語彙・技法・創作】
+         =================================================================== -->
+    <h2 class="section-title">💡 【語彙・技法・創作】</h2>
+
+    <!-- 問12 -->
+    <div class="quiz-card" id="card-q12" data-quiz-id="q12">
+        <span class="status-badge" id="badge-q12"></span>
+        <div class="quiz-num">問 12</div>
+        <div class="question">ソース内で紹介されている「春の雨」を表す言葉を一つ答えなさい。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">春に優しく降る雨。そのまま合体させた言葉だよ。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：春雨（はるさめ）。</span>
+                    <div class="ans-explain">同じ雨でも季節や降り方によって「春雨」「五月晴れ」「蝉しぐれ」など使い分ける、日本語の繊細な季節感を大切にしましょう[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q12">
+                            <button class="judge-btn btn-correct" id="btn-correct-q12" onclick="submitResult('q12', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q12" onclick="submitResult('q12', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q12" style="display:none;" onclick="resetQuizCard('q12')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問13 -->
+    <div class="quiz-card" id="card-q13" data-quiz-id="q13">
+        <span class="status-badge" id="badge-q13"></span>
+        <div class="quiz-num">問 13</div>
+        <div class="question">俳句を作る技法の一つで、季語と、それとは直接関係のない言葉を組み合わせる方法を何と言いますか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">「持ってくる」「合わせる」という漢字の組み合わせだよ。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：取り合わせ。</span>
+                    <div class="ans-explain">関係ない二つの言葉が合体した瞬間、頭の中でパッと新しいイメージや世界観が生まれる強力な表現技法です[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q13">
+                            <button class="judge-btn btn-correct" id="btn-correct-q13" onclick="submitResult('q13', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q13" onclick="submitResult('q13', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q13" style="display:none;" onclick="resetQuizCard('q13')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問14 -->
+    <div class="quiz-card" id="card-q14" data-quiz-id="q14">
+        <span class="status-badge" id="badge-q14"></span>
+        <div class="quiz-num">問 14</div>
+        <div class="question">短歌や俳句を創作する際、最初に書いた文章と比べ、言葉を入れ替えたり選んだりして表現を磨く作業を何と言いますか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">解説のピンクのボックス（■）をチェック！難しい漢字だから気をつけてね。</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：推敲（すいこう）。</span>
+                    <div class="ans-explain">言葉を徹底的に厳選し、磨き上げることで、最も伝えたい感情がまっすぐ美しく相手に届くようになります[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q14">
+                            <button class="judge-btn btn-correct" id="btn-correct-q14" onclick="submitResult('q14', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q14" onclick="submitResult('q14', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q14" style="display:none;" onclick="resetQuizCard('q14')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- 問15 -->
+    <div class="quiz-card" id="card-q15" data-quiz-id="q15">
+        <span class="status-badge" id="badge-q15"></span>
+        <div class="quiz-num">問 15</div>
+        <div class="question">日本の新聞や雑誌に短歌の投稿欄があることは、世界的に見てどのようなことだと言及されていますか。</div>
+        <div class="accordion-block">
+            <details class="hint-details">
+                <summary>💡 ヒントをみる</summary>
+                <div class="hint-content">プロだけでなく、一般の普通の人が普段から短歌を作る文化って他の国にもあるのかな？</div>
+            </details>
+            <details class="ans-details">
+                <summary>✅ 答え合わせ</summary>
+                <div class="answer-content">
+                    <span class="ans-badge">答：普通の人たちが短歌を作って投稿する文化は、世界の中でも非常に珍しく、日本が自慢できる文化である。</span>
+                    <div class="ans-explain">千三百年以上前の文化が、現代でも一般の人々にこれほど愛され、息づいている国は世界中どこを探してもほとんどありません。日本が誇るべき素敵な伝統です[cite: 3]。</div>
+                    <div class="judge-zone">
+                        <div class="btn-row" id="btn-row-q15">
+                            <button class="judge-btn btn-correct" id="btn-correct-q15" onclick="submitResult('q15', 'correct')">✨ 書けた！(正解)</button>
+                            <button class="judge-btn btn-incorrect" id="btn-incorrect-q15" onclick="submitResult('q15', 'incorrect')">❌ もう一度！(不正解)</button>
+                        </div>
+                        <div class="text-right"><span class="action-link" id="reset-q15" style="display:none;" onclick="resetQuizCard('q15')">解き直す</span></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===================================================================
+     通信＆インターフェースロジック（Ramenシステム完全移植）
+     =================================================================== -->
+<script>
+    // 教科設定とGASのデプロイURL
+    const CONFIG = { subject_id: "ja", page_id: "p64" };
+    const gasWebappUrl = "https://script.google.com/macros/s/AKfycbwS8EIJxAL-ClAqL28cl62m6dEY0Wye8bJtiLOFL7X3nsWAVJhG7Fj0dBHZZFoVnXBwjA/exec"; 
+
+    // 全15問の多重送信ロック管理
+    const submissionLocks = {};
+    for (let i = 1; i <= 15; i++) {
+        submissionLocks[`q${i}`] = false;
+    }
+
+    function submitResult(quizId, userStatus) {
+        if (submissionLocks[quizId] === true) return; 
+        submissionLocks[quizId] = true; 
+
+        const btnCorrect = document.getElementById(`btn-correct-${quizId}`);
+        const btnIncorrect = document.getElementById(`btn-incorrect-${quizId}`);
+        const badge = document.getElementById(`badge-${quizId}`);
+        const card = document.getElementById(`card-${quizId}`);
+
+        if (userStatus === 'correct') {
+            btnCorrect.classList.add('is-selected');
+            btnCorrect.innerText = "⚡ 送信完了（正解）";
+            btnIncorrect.classList.add('is-hidden'); 
+            if (card) card.classList.add('status-correct');
+        } else {
+            btnIncorrect.classList.add('is-selected');
+            btnIncorrect.innerText = "⚡ 送信完了（要復習）";
+            btnCorrect.classList.add('is-hidden'); 
+            if (card) card.classList.add('status-incorrect');
+        }
+
+        if (badge) {
+            badge.style.display = "block";
+            badge.innerText = "⏳ サーバー同期中...";
+            badge.style.background = "#ebdbc5"; badge.style.color = "#b57c2b";
+        }
+
+        const logData = {
+            subject_id: CONFIG.subject_id,
+            page_id: CONFIG.page_id,
+            quiz_id: quizId,
+            full_quiz_id: `${CONFIG.subject_id}.${CONFIG.page_id}.${quizId}`,
+            result: userStatus,
+            timestamp: new Date().toISOString()
+        };
+
+        if (!gasWebappUrl) {
+            setTimeout(() => {
+                if (badge) {
+                    badge.innerText = "☁️ ローカル保存完了";
+                    badge.style.background = "#edf2f7"; badge.style.color = "#4a5568";
+                }
+                document.getElementById(`reset-${quizId}`).style.display = "inline-block";
+            }, 500);
+            return;
+        }
+
+        fetch(gasWebappUrl, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(logData)
+        })
+        .then(() => {
+            if (badge) {
+                badge.innerText = "✨ スプレッドシート同期済";
+                badge.style.background = userStatus === 'correct' ? "#e6f4ea" : "#fce8e6";
+                badge.style.color = userStatus === 'correct' ? "#137333" : "#c5221f";
+            }
+            document.getElementById(`reset-${quizId}`).style.display = "inline-block";
+        })
+        .catch(err => {
+            console.error("通信失敗:", err);
+            if (badge) {
+                badge.innerText = "⚠️ 送信失敗・再試行可";
+                badge.style.background = "#fffbeb"; badge.style.color = "#b57c2b";
+            }
+            submissionLocks[quizId] = false; 
+            btnCorrect.classList.remove('is-hidden');
+            btnIncorrect.classList.remove('is-hidden');
+            btnCorrect.innerText = "✨ 書けた！(正解)";
+            btnIncorrect.innerText = "❌ もう一度！(不正解)";
+        });
+    }
+
+    function resetQuizCard(quizId) {
+        submissionLocks[quizId] = false; 
+
+        const btnCorrect = document.getElementById(`btn-correct-${quizId}`);
+        const btnIncorrect = document.getElementById(`btn-incorrect-${quizId}`);
+        const card = document.getElementById(`card-${quizId}`);
+        const badge = document.getElementById(`badge-${quizId}`);
+
+        btnCorrect.classList.remove('is-selected', 'is-hidden');
+        btnIncorrect.classList.remove('is-selected', 'is-hidden');
+        btnCorrect.innerText = "✨ 書けた！(正解)";
+        btnIncorrect.innerText = "❌ もう一度！(不正解)";
+
+        if (card) card.classList.remove('status-correct', 'status-incorrect');
+        if (badge) { badge.style.display = "none"; }
+        
+        document.getElementById(`reset-${quizId}`).style.display = "none";
+    }
+</script>
+
+</body>
+</html>
