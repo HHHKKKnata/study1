@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- 全体を英語モードにして、英語話者の発音を強制します -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dear Nanako and Daniel, The Golden Week holidays start tomorrow. I am going to leave for Singapore tomorrow morning.">
+    <title>English Reading Textbook (Pages 10-15)</title>
+    <style>
+        /* 目の疲れない和風モダン・ベージュ系の配色 */
+        :root {
+            --bg-color: #fcf9f2;
+            --container-bg: #ffffff;
+            --text-color: #2c3539;
+            --primary-color: #8fa499;
+            --accent-color: #d9a05b;
+            --border-color: #e6e0d4;
+            --box-bg-gray: #f7f5f0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Georgia', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .page-block {
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 15px rgba(217, 212, 197, 0.3);
+        }
+
+        /* 見た目用の日本語タイトル（読み上げにはスルーされます） */
+        .visual-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-family: sans-serif;
+        }
+
+        /* 見た目用の日本語見出し */
+        h2 {
+            font-size: 1.15rem;
+            color: var(--text-color);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 12px;
+            font-family: sans-serif;
+        }
+        h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 4px;
+            height: 1.2rem;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .intro-text {
+            color: #555;
+            background-color: var(--box-bg-gray);
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            border-left: 3px solid #ccc;
+            font-family: sans-serif;
+        }
+
+        /* ★メイン英文（リーディングモードがここだけを認識します） */
+        .english-main {
+            font-family: 'Georgia', Times, serif;
+            font-size: 1.25rem;
+            background-color: #fafbfc;
+            border: 1px dashed var(--primary-color);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #111;
+        }
+        /* メインの最初の一歩をh1にすることで確実にここから読ませます */
+        .english-main h1 {
+            font-size: 1.25rem;
+            font-weight: normal;
+            margin: 0 0 12px 0;
+            padding: 0;
+            border: none;
+            color: #111;
+            display: inline;
+        }
+        .english-main p {
+            margin: 0 0 12px 0;
+        }
+
+        /* 単語・熟語リスト */
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 8px 15px;
+        }
+        .word-item {
+            border-bottom: 1px solid #f0eae0;
+            padding: 6px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .word-en {
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            color: #2a52be;
+        }
+        .word-ja {
+            color: #555;
+            font-size: 0.9rem;
+            font-family: sans-serif;
+        }
+
+        /* 文法解説ボックス */
+        .grammar-box {
+            background-color: #f4f7f6;
+            border: 1px solid #ceded6;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 15px;
+            font-family: sans-serif;
+        }
+        .grammar-title {
+            font-weight: bold;
+            color: #3b6653;
+            margin-bottom: 8px;
+        }
+        .grammar-example {
+            font-family: 'Georgia', serif;
+            font-size: 1.1rem;
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 8px 0;
+            border-left: 3px solid var(--primary-color);
+        }
+        .grammar-desc {
+            font-size: 0.9rem;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+<main class="container" id="main-content">
+
+    <!-- ================= 10〜11ページ ================= -->
+    <section class="page-block">
+        <!-- aria-hidden="true" がついたブロックは、読み上げ機能から完全に「無視」されます -->
+        <div aria-hidden="true">
+            <div class="visual-title">英語の学習：10ページから11ページ</div>
+            <p class="intro-text">理子はお世話になるおばの奈々子とその夫ダニエルにメッセージを送ります。理子たちはシンガポール市内を車で移動しています。</p>
+            <h2>メインの英文</h2>
+        </div>
+        
+        <!-- 読み上げ機能は、この中の文章「だけ」を見つけてネイティブ発音で読み上げます -->
+        <div class="english-main">
+            <h1>Dear Nanako and Daniel,</h1><br>
+            <p>The “Golden Week” holidays start tomorrow. I’m going to leave for Singapore tomorrow morning. You’re going to show me around the city, right? I can’t wait!</p>
+            <p>My flight arrives in Singapore at 5 p.m. Where are we going to meet in the airport? See you soon!</p>
+            <p>Riko</p>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;" aria-hidden="true">
+            <p>Riko: What are we going to do today?</p>
+            <p>Daniel: First, we’re going to visit Merlion Park.</p>
+            <p>Riko: Is the park far from here?</p>
+            <p>Daniel: No, it’s not. You’ll see the Merlion soon.</p>
+            <p>Riko: I’m so excited.</p>
+            <p>Daniel: After that, we’re going to have lunch. What do you want to eat? Seafood or chicken rice?</p>
+            <p>Riko: I want to eat seafood.</p>
+            <p>Daniel: OK. I’ll make a reservation.</p>
+        </div>
+
+        <div aria-hidden="true">
+            <h2>New Words（新出単語）</h2>
+            <div class="word-grid">
+                <div class="word-item"><span class="word-en">golden</span><span class="word-ja">金色の、すばらしい</span></div>
+                <div class="word-item"><span class="word-en">holiday(s)</span><span class="word-ja">休日、祝日</span></div>
+                <div class="word-item"><span class="word-en">flight</span><span class="word-ja">定期航空便、フライト</span></div>
+                <div class="word-item"><span class="word-en">arrive(s)</span><span class="word-ja">到着する</span></div>
+                <div class="word-item"><span class="word-en">airport</span><span class="word-ja">空港</span></div>
+                <div class="word-item"><span class="word-en">soon</span><span class="word-ja">すぐに、まもなく</span></div>
+                <div class="word-item"><span class="word-en">See you</span><span class="word-ja">またね、また会いましょう</span></div>
+                <div class="word-item"><span class="word-en">will</span><span class="word-ja">…するつもりだ、…だろう</span></div>
+                <div class="word-item"><span class="word-en">excited</span><span class="word-ja">興奮した、ワクワクした</span></div>
+                <div class="word-item"><span class="word-en">seafood</span><span class="word-ja">シーフード、海産食品</span></div>
+                <div class="word-item"><span class="word-en">reservation</span><span class="word-ja">予約</span></div>
+                <div class="word-item"><span class="word-en">you'll</span><span class="word-ja">you will の短縮形</span></div>
+                <div class="word-item"><span class="word-en">I'll</span><span class="word-ja">I will の短縮形</span></div>
+            </div>
+
+            <h2>Key Sentences（文法表現解説）</h2>
+            <div class="grammar-box">
+                <div class="grammar-title">Key Sentences 1</div>
+                <div class="grammar-example">I am going to visit Singapore tomorrow.</div>
+                <div class="grammar-example">Are you going to visit Singapore tomorrow? — Yes, I am. [No, I am not.]</div>
+                <div class="grammar-desc"><strong>未来を表す be going to + 動詞の原形</strong><br>「…するつもりです」などあらかじめ決めておいた予定や未来のことを表すには、〈am [are, is] going to + 動詞の原形〉を使う。</div>
+            </div>
+            <div class="grammar-box">
+                <div class="grammar-title">Key Sentences 2</div>
+                <div class="grammar-example">I will make a reservation.</div>
+                <div class="grammar-desc"><strong>助動詞 will</strong><br>「これから…しよう」とそのときに決めた予定や未来のことを表すには〈will + 動詞の原形〉を使う。また、「…でしょう」「…するつもりです」など未来の予測や意志を表すときにも使う。</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ================= 12〜13ページ ================= -->
+    <section class="page-block">
+        <div aria-hidden="true">
+            <div class="visual-title">英語の学習：12ページから13ページ</div>
+            <p class="intro-text">そのあと、理子はエディにEメールを書きました。ショッピングの際にどんなことに気づいたのでしょうか。</p>
+            <h2>メインの英文</h2>
+        </div>
+        
+        <div class="english-main">
+            <h1>Hi Eddy,</h1><br>
+            <p>Today I visited Merlion Park. I saw the famous Merlion there. It’s 8.6 meters tall, and it weighs 70 tons. It has the body of a fish and the head of a lion. I’ll show you some pictures of it at school.</p>
+            <p>After that, I went shopping. I found four different languages on Singapore dollars: Malay, Chinese, Tamil, and English. People in Singapore speak different languages. For example, my uncle speaks Tamil and English. So, I can communicate with him in English.</p>
+            <p>See you soon,</p>
+            <p>Riko</p>
+        </div>
+
+        <div aria-hidden="true">
+            <h2>New Words（新出単語）</h2>
+            <div class="word-grid">
+                <div class="word-item"><span class="word-en">meter(s)</span><span class="word-ja">メートル（長さの単位）</span></div>
+                <div class="word-item"><span class="word-en">tall</span><span class="word-ja">（身長や高さが）高い</span></div>
+                <div class="word-item"><span class="word-en">weigh(s)</span><span class="word-ja">〜の重さがある</span></div>
+                <div class="word-item"><span class="word-en">ton(s)</span><span class="word-ja">トン（重さの単位）</span></div>
+                <div class="word-item"><span class="word-en">found</span><span class="word-ja">find（見つける）の過去形</span></div>
+                <div class="word-item"><span class="word-en">language(s)</span><span class="word-ja">言語、言葉</span></div>
+                <div class="word-item"><span class="word-en">dollar(s)</span><span class="word-ja">ドル（通貨の単位）</span></div>
+                <div class="word-item"><span class="word-en">example</span><span class="word-ja">例、手本</span></div>
+                <div class="word-item"><span class="word-en">communicate</span><span class="word-ja">意思を伝え合う、連絡をとる</span></div>
+                <div class="word-item"><span class="word-en">for example</span><span class="word-ja">たとえば</span></div>
+            </div>
+
+            <h2>Key Sentences（文法表現解説）</h2>
+            <div class="grammar-box">
+                <div class="grammar-title">Key Sentences 3</div>
+                <div class="grammar-example">I will show you some pictures.</div>
+                <div class="grammar-desc"><strong>show, make, buy, teach, give など + (人) + (もの)</strong><br>「(人)に(もの)を…する」という意味になる。動詞のあとが、「だれ(人) ＋ 何(もの)」の順になっていることに注意する。</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ================= 14〜15ページ ================= -->
+    <section class="page-block">
+        <div aria-hidden="true">
+            <div class="visual-title">英語の学習：14ページから15ページ</div>
+            <p class="intro-text">英語の授業で、理子はシンガポールについて発表しています。旅行を通してどんなことを感じたのでしょうか。</p>
+            <h2>メインの英文</h2>
+        </div>
+        
+        <div class="english-main">
+            <h1>I visited Singapore last month.</h1><br>
+            <p>This is Chinatown. I saw many paintings on the walls. One of the paintings showed Detective Conan, my favorite character. I was surprised.</p>
+            <p>Look at this picture. This is a Hindu temple. People call this area Little India. Many people from India live in this area. I visited Arab Street, too.</p>
+            <p>This picture shows a big mosque with an onion-shaped dome. There are some gift shops around it. I bought some gifts for my family.</p>
+            <p>Singapore is an interesting country. You can experience different languages and cultures there.</p>
+        </div>
+
+        <div aria-hidden="true">
+            <h2>New Words（新出単語）</h2>
+            <div class="word-grid">
+                <div class="word-item"><span class="word-en">painting(s)</span><span class="word-ja">絵、絵画</span></div>
+                <div class="word-item"><span class="word-en">wall(s)</span><span class="word-ja">壁</span></div>
+                <div class="word-item"><span class="word-en">surprised</span><span class="word-ja">驚いた、びっくりした</span></div>
+                <div class="word-item"><span class="word-en">area</span><span class="word-ja">地域、区域、場所</span></div>
+                <div class="word-item"><span class="word-en">mosque</span><span class="word-ja">モスク（イスラム教の礼拝堂）</span></div>
+                <div class="word-item"><span class="word-en">culture(s)</span><span class="word-ja">文化</span></div>
+                <div class="word-item"><span class="word-en">onion-shaped</span><span class="word-ja">タマネギ型の</span></div>
+            </div>
+
+            <h2>Key Sentences（文法表現解説）</h2>
+            <div class="grammar-box">
+                <div class="grammar-title">Key Sentences 4</div>
+                <div class="grammar-example">People call this area Little India.</div>
+                <div class="grammar-desc"><strong>call + A + B</strong><br>「AをBと呼ぶ」という意味になる。call のあとは、「A (人・もの) ＋ B (名前)」の順になる。</div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+</body>
+</html>
